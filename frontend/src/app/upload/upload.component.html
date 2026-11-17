@@ -25,6 +25,7 @@
 
     <!-- Paciente ja cadastrado: mostra o que sera alterado antes de salvar -->
     <div *ngIf="pacienteExistente" class="alert alert-warning">
+      <span class="material-icons ubs-icone-msg" aria-hidden="true">warning</span>
       <strong>Paciente já cadastrado.</strong>
       O CPF {{ pacienteSelecionado?.cpf }} já consta na base; salvar vai
       <strong>atualizar o registro existente</strong>, sem criar um novo.
@@ -190,7 +191,7 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-success me-2" (click)="gravar(pacienteSelecionado)">Salvar</button>
+      <button class="btn btn-success me-2" (click)="gravar(pacienteSelecionado)"><span class="material-icons ubs-icone-msg" aria-hidden="true">check_circle</span>Salvar</button>
     </div>
   
 

@@ -1,0 +1,53 @@
+<div class="a11y" (keydown.escape)="fechar()">
+  @if (aberto()) {
+    <section class="a11y__painel" id="a11y-painel" aria-labelledby="a11y-titulo">
+      <h2 class="a11y__titulo" id="a11y-titulo">Cores para daltonismo</h2>
+      <p class="a11y__ajuda">Escolha o modo em que você distingue melhor as cores.</p>
+
+      <div class="a11y__opcoes" role="radiogroup" aria-labelledby="a11y-titulo">
+        @for (opcao of opcoes; track opcao.modo) {
+          @let ativo = opcao.modo === servico.modoAtual();
+          <button
+            type="button"
+            role="radio"
+            class="a11y__opcao"
+            [class.a11y__opcao--ativa]="ativo"
+            [attr.aria-checked]="ativo"
+            (click)="escolher(opcao.modo)"
+          >
+            <span class="a11y__esferas" aria-hidden="true">
+              @for (tipo of tiposNaEsfera; track tipo) {
+                <span
+                  class="a11y__esfera"
+                  [style.background]="opcao.paleta.cores[tipo]"
+                  [style.color]="corTexto(opcao.paleta.cores[tipo])"
+                >
+                  <span class="material-icons">{{ icone(tipo) }}</span>
+                </span>
+              }
+            </span>
+            <span class="a11y__texto">
+              <strong>{{ opcao.paleta.nome }}</strong>
+              <small>{{ opcao.paleta.descricao }}</small>
+            </span>
+            @if (ativo) {
+              <span class="material-icons a11y__marcado" aria-hidden="true">check</span>
+            }
+          </button>
+        }
+      </div>
+    </section>
+  }
+
+  <button
+    type="button"
+    class="a11y__botao"
+    title="Acessibilidade: cores para daltonismo"
+    aria-label="Acessibilidade: cores para daltonismo"
+    aria-controls="a11y-painel"
+    [attr.aria-expanded]="aberto()"
+    (click)="alternar()"
+  >
+    <span class="material-icons" aria-hidden="true">accessibility_new</span>
+  </button>
+</div>

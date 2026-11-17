@@ -35,10 +35,10 @@
           <td>{{ usuario.email }}</td>
           <td>
             <button class="btn btn-primary btn-sm me-2" (click)="abrirModalEditar(usuario)">
-              <i class="bi bi-pencil"></i> Editar
+              <span class="material-icons ubs-icone-msg" aria-hidden="true">edit</span> Editar
             </button>
             <button class="btn btn-danger btn-sm" (click)="excluirUsuario(usuario.id)">
-              <i class="bi bi-trash"></i> Excluir
+              <span class="material-icons ubs-icone-msg" aria-hidden="true">delete</span> Excluir
             </button>
           </td>
         </tr>
@@ -60,7 +60,7 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-danger" role="alert" *ngIf="erroModal">
-            {{ erroModal }}
+            <span class="material-icons ubs-icone-msg" aria-hidden="true">cancel</span>{{ erroModal }}
           </div>
           <form (ngSubmit)="atualizarUsuario()" #form="ngForm">
             <div class="row g-3">
@@ -132,7 +132,7 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-danger" role="alert" *ngIf="erroModal">
-            {{ erroModal }}
+            <span class="material-icons ubs-icone-msg" aria-hidden="true">cancel</span>{{ erroModal }}
           </div>
           <form (ngSubmit)="salvarUsuario()" #form="ngForm">
             <div class="row g-3">

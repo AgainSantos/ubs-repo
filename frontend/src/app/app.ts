@@ -8,12 +8,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { H } from '@angular/cdk/keycodes';
 import { LogoutService } from './entrada/login/logout-service';
 import { PacienteService } from './service/paciente.service';
+import { BotaoAcessibilidade } from './acessibilidade/botao-acessibilidade/botao-acessibilidade';
 
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, MatIconModule],
+  imports: [RouterOutlet, MatToolbarModule, RouterLink, MatIconModule, BotaoAcessibilidade],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   providers: [AuthService, LogoutService, CookieService, PacienteService]

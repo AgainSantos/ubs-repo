@@ -12,8 +12,8 @@
              [(ngModel)]="nomeCompleto" name="nomeCompleto"
              minlength="10" required #nomeCompletoField="ngModel" />
       <div *ngIf="nomeCompletoField.invalid && (nomeCompletoField.dirty || nomeCompletoField.touched)" class="text-danger">
-        <small *ngIf="nomeCompletoField.errors?.['required']">Nome Completo é obrigatório.</small>
-        <small *ngIf="nomeCompletoField.errors?.['minlength']">Deve ter pelo menos 10 caracteres.</small>
+        <small *ngIf="nomeCompletoField.errors?.['required']"><span class="material-icons ubs-icone-msg" aria-hidden="true">error</span>Nome Completo é obrigatório.</small>
+        <small *ngIf="nomeCompletoField.errors?.['minlength']"><span class="material-icons ubs-icone-msg" aria-hidden="true">error</span>Deve ter pelo menos 10 caracteres.</small>
       </div>
     </div>
 
@@ -311,7 +311,7 @@
     </div>
 
 
-    <button type="submit" class="btn btn-success mt-3">Salvar Paciente</button>
+    <button type="submit" class="btn btn-success mt-3"><span class="material-icons ubs-icone-msg" aria-hidden="true">check_circle</span>Salvar Paciente</button>
   </form>
 
   <!-- MODAL DE CONFIRMAÇÃO -->

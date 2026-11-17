@@ -1,0 +1,84 @@
+$escuro: #004646; // mesma cor de texto da identidade da UBS
+
+.a11y {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1040; // acima do cabeçalho (1000), abaixo dos modais do Bootstrap
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.a11y__botao {
+  width: 56px;
+  height: 56px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: $escuro;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+
+  .material-icons { font-size: 30px; }
+  &:hover { background: #006b6b; }
+  &:focus-visible { outline: 3px solid #1a1a1a; outline-offset: 3px; }
+}
+
+.a11y__painel {
+  width: min(320px, calc(100vw - 40px));
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff;
+  color: #1a1a1a;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+}
+
+.a11y__titulo { margin: 0 0 4px; font-size: 1.1rem; color: $escuro; text-align: left; }
+.a11y__ajuda { margin: 0 0 12px; font-size: 0.85rem; color: #444; }
+
+.a11y__opcoes { display: flex; flex-direction: column; gap: 8px; }
+
+.a11y__opcao {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #d0d5d9;
+  border-radius: 10px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover { border-color: $escuro; }
+  &:focus-visible { outline: 3px solid #1a1a1a; outline-offset: 2px; }
+}
+
+// Opção ativa marcada por borda grossa, fundo e ícone, não só por cor.
+.a11y__opcao--ativa { border: 3px solid $escuro; background: #eef6f5; }
+
+.a11y__esferas { display: flex; gap: 4px; }
+
+.a11y__esfera {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+
+  .material-icons { font-size: 18px; }
+}
+
+.a11y__texto {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  line-height: 1.2;
+
+  small { color: #555; }
+}
+
+.a11y__marcado { color: $escuro; }

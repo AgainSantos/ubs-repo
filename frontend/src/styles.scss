@@ -5,6 +5,11 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use '@angular/cdk' as cdk;
+
+// Esconde visualmente o aviso para leitores de tela (LiveAnnouncer do CDK),
+// usado pelo botão de acessibilidade ao trocar o modo de cores.
+@include cdk.a11y-visually-hidden();
 
 html {
   @include mat.theme((
@@ -29,6 +34,90 @@ body {
 
   // Reset the user agent margin.
   margin: 0;
+}
+
+// =============================================================================
+// ACESSIBILIDADE PARA DALTONISMO
+// As variáveis --ubs-* são reescritas pelo AcessibilidadeService a partir do
+// Mapa PALETAS. Os valores abaixo são só o ponto de partida (modo Padrão),
+// usados antes do Angular carregar.
+// =============================================================================
+$tipos-semanticos: sucesso, erro, aviso, info, neutro;
+
+:root {
+  --ubs-sucesso: #198754; --ubs-sucesso-texto: #ffffff;
+  --ubs-erro: #dc3545;    --ubs-erro-texto: #ffffff;
+  --ubs-aviso: #ffc107;   --ubs-aviso-texto: #1a1a1a;
+  --ubs-info: #0d6efd;    --ubs-info-texto: #ffffff;
+  --ubs-neutro: #6c757d;  --ubs-neutro-texto: #ffffff;
+}
+
+// Selo com ícone + texto (ex.: status do agendamento). Vale em todos os modos.
+.ubs-selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px 3px 6px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  .material-icons, .mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+@each $tipo in $tipos-semanticos {
+  .ubs-selo--#{$tipo} {
+    background: var(--ubs-#{$tipo});
+    color: var(--ubs-#{$tipo}-texto);
+  }
+
+  // SnackBar (Angular Material) com a cor do significado.
+  .ubs-snack--#{$tipo} {
+    --mat-snack-bar-container-color: var(--ubs-#{$tipo});
+    --mat-snack-bar-supporting-text-color: var(--ubs-#{$tipo}-texto);
+    --mat-snack-bar-button-color: var(--ubs-#{$tipo}-texto);
+  }
+}
+
+// Ícone colado a mensagens (alertas, validação), para não depender só da cor.
+.ubs-icone-msg {
+  font-size: 1.15em;
+  vertical-align: -0.2em;
+  margin-right: 4px;
+}
+
+// Nos modos para daltonismo, componentes do Bootstrap e do Material passam a
+// usar a paleta escolhida. No modo Padrão nada disso é aplicado, então o
+// visual original do sistema fica igual.
+html.modo-acessivel {
+  --mat-sys-error: var(--ubs-erro);
+  --mat-sys-on-error: var(--ubs-erro-texto);
+
+  @each $classe, $tipo in (success: sucesso, danger: erro, warning: aviso) {
+    .btn-#{$classe} {
+      --bs-btn-color: var(--ubs-#{$tipo}-texto);
+      --bs-btn-bg: var(--ubs-#{$tipo});
+      --bs-btn-border-color: var(--ubs-#{$tipo});
+      --bs-btn-hover-color: var(--ubs-#{$tipo}-texto);
+      --bs-btn-hover-bg: color-mix(in srgb, var(--ubs-#{$tipo}) 85%, black);
+      --bs-btn-hover-border-color: color-mix(in srgb, var(--ubs-#{$tipo}) 85%, black);
+      --bs-btn-active-color: var(--ubs-#{$tipo}-texto);
+      --bs-btn-active-bg: color-mix(in srgb, var(--ubs-#{$tipo}) 75%, black);
+      --bs-btn-active-border-color: color-mix(in srgb, var(--ubs-#{$tipo}) 75%, black);
+    }
+
+    .alert-#{$classe} {
+      --bs-alert-color: #1a1a1a;
+      --bs-alert-bg: color-mix(in srgb, var(--ubs-#{$tipo}) 14%, white);
+      --bs-alert-border-color: var(--ubs-#{$tipo});
+      border-left-width: 6px;
+    }
+
+    .text-#{$classe} {
+      color: var(--ubs-#{$tipo}) !important;
+    }
+  }
 }
 
 // @use '@angular/material' as mat;

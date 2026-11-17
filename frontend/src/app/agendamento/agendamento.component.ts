@@ -20,7 +20,8 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AgendamentoService } from '../service/agendamento.service';
 import { PacienteService } from '../service/paciente.service';
 import { MedicoService } from '../service/medico.service';
-import { Agendamento, AgendamentoRequest, StatusAgendamento, TIPOS_CONSULTA } from '../model/agendamento.model';
+import { Agendamento, AgendamentoRequest, STATUS_VISUAL, StatusAgendamento, StatusVisual, TIPOS_CONSULTA } from '../model/agendamento.model';
+import { SINAIS, TipoSemantico } from '../acessibilidade/paletas';
 import { Paciente } from '../model/paciente.model';
 import { Medico } from '../model/medico.model';
 
@@ -121,14 +122,14 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
         this.dataSource.data = ags;
         this.configurarFiltro();
       },
-      error: () => this.mostrarMensagem('Erro ao carregar agendamentos')
+      error: () => this.mostrarMensagem('Erro ao carregar agendamentos', 'erro')
     });
   }
 
   private carregarPacientes(): void {
     this.pacienteService.listarPacientes().subscribe({
       next: pcs => this.pacientes = pcs,
-      error: () => this.mostrarMensagem('Erro ao carregar pacientes')
+      error: () => this.mostrarMensagem('Erro ao carregar pacientes', 'erro')
     });
   }
 
@@ -138,7 +139,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
         this.medicos = mds;
         this.medicosFiltrados = [...mds];
       },
-      error: () => this.mostrarMensagem('Erro ao carregar médicos')
+      error: () => this.mostrarMensagem('Erro ao carregar médicos', 'erro')
     });
   }
 
@@ -217,20 +218,20 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
           if (response.disponivel) {
             this.agendamentoService.criarAgendamento(req).subscribe({
               next: () => {
-                this.mostrarMensagem('Agendamento criado com sucesso!');
+                this.mostrarMensagem('Agendamento criado com sucesso!', 'sucesso');
                 this.agendamentoForm.reset();
                 Object.keys(this.agendamentoForm.controls).forEach(key => {
                   this.agendamentoForm.get(key)?.setErrors(null) ;
                 });
                 this.carregarAgendamentos();
               },
-              error: () => this.mostrarMensagem('Erro ao criar agendamento.')
+              error: () => this.mostrarMensagem('Erro ao criar agendamento.', 'erro')
             });
           } else {
-            this.mostrarMensagem('Horário indisponível. Escolha outro horário.');
+            this.mostrarMensagem('Horário indisponível. Escolha outro horário.', 'aviso');
           }
         },
-        error: () => this.mostrarMensagem('Erro ao verificar disponibilidade.')
+        error: () => this.mostrarMensagem('Erro ao verificar disponibilidade.', 'erro')
       });
   }
 
@@ -238,32 +239,26 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
     this.agendamentoService.cancelarAgendamento(id).subscribe({
       next: () => {
-        this.mostrarMensagem('Agendamento cancelado');
+        this.mostrarMensagem('Agendamento cancelado', 'sucesso');
         this.carregarAgendamentos();
       },
-      error: () => this.mostrarMensagem('Erro ao cancelar agendamento')
+      error: () => this.mostrarMensagem('Erro ao cancelar agendamento', 'erro')
     });
   }
 
   confirmarAgendamento(id: number): void {
     this.agendamentoService.confirmarAgendamento(id).subscribe({
       next: () => {
-        this.mostrarMensagem('Agendamento confirmado');
+        this.mostrarMensagem('Agendamento confirmado', 'sucesso');
         this.carregarAgendamentos();
       },
-      error: () => this.mostrarMensagem('Erro ao confirmar agendamento')
+      error: () => this.mostrarMensagem('Erro ao confirmar agendamento', 'erro')
     });
   }
 
-  getStatusColor(status: StatusAgendamento): string {
-    switch (status) {
-      case StatusAgendamento.AGENDADO: return 'primary';
-      case StatusAgendamento.CONFIRMADO: return 'accent';
-      case StatusAgendamento.CANCELADO: return 'warn';
-      case StatusAgendamento.REALIZADO: return 'primary';
-      case StatusAgendamento.FALTOU: return 'warn';
-      default: return 'primary';
-    }
+  /** Aparência do status, buscada no Mapa STATUS_VISUAL (substitui o antigo switch). */
+  statusVisual(status: StatusAgendamento): StatusVisual {
+    return STATUS_VISUAL.get(status) ?? { tipo: 'neutro', icone: 'help', rotulo: String(status) };
   }
 
   /**
@@ -298,11 +293,17 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
       observacoes: f.observacoes
     };
   }
-  private mostrarMensagem(msg: string): void {
-    this.snackBar.open(msg, 'Fechar', {
+  /**
+   * Mostra a mensagem com símbolo (✔ ✖ ⚠) e com a cor do significado na paleta
+   * de acessibilidade. Antes, sucesso e erro apareciam exatamente iguais.
+   */
+  private mostrarMensagem(msg: string, tipo: TipoSemantico = 'info'): void {
+    const simbolo = SINAIS.get(tipo)?.simbolo ?? '';
+    this.snackBar.open(`${simbolo} ${msg}`.trim(), 'Fechar', {
       duration: 4000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
+      panelClass: [`ubs-snack--${tipo}`],
     });
   }
 }

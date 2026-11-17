@@ -133,6 +133,10 @@ mat-card {
   }
 }
 
+// Botões de ação seguem a paleta de acessibilidade (ícones já diferem na forma).
+.acao-sucesso mat-icon { color: var(--ubs-sucesso); }
+.acao-erro mat-icon { color: var(--ubs-erro); }
+
 .mat-row .mat-cell.no-data-cell {
     text-align: center;
     padding: 20px;

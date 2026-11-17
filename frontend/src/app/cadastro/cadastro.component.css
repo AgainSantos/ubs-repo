@@ -72,7 +72,7 @@ label {
 small.text-danger {
   display: block;
   margin-top: 7px;
-  color: red;
+  color: var(--ubs-erro, red); /* segue a paleta de acessibilidade */
 }
 
 .sub-category {
@@ -101,6 +101,6 @@ hr {
 /* Campos obrigatórios */
 .required-field label::after {
   content: '*';
-  color: red;
+  color: var(--ubs-erro, red); /* segue a paleta de acessibilidade */
   margin-left: 5px;
 }
